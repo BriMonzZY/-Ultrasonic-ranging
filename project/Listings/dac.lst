@@ -1,0 +1,24 @@
+C51 COMPILER V9.60.0.0   DAC                                                               01/28/2021 21:35:57 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE DAC
+OBJECT MODULE PLACED IN ..\output\dac.obj
+COMPILER INVOKED BY: D:\app\keil\C51\BIN\C51.EXE ..\files\dac.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\List
+                    -ings\dac.lst) TABS(2) OBJECT(..\output\dac.obj)
+
+line level    source
+
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   ----    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

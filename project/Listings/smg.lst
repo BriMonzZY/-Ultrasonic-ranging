@@ -1,0 +1,59 @@
+C51 COMPILER V9.60.0.0   SMG                                                               01/28/2021 21:35:57 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE SMG
+OBJECT MODULE PLACED IN ..\output\smg.obj
+COMPILER INVOKED BY: D:\app\keil\C51\BIN\C51.EXE ..\files\smg.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\List
+                    -ings\smg.lst) TABS(2) OBJECT(..\output\smg.obj)
+
+line level    source
+
+   1          #include "config.h"
+   2          #include "smg.h"
+   3          #include "main.h"
+   4                                                                                            //10    11   12    13     14     15   16    17
+   5                                                                                            //O     P     e     n     熄灭   -    c     F
+   6          uchar code SMGduan[]= {0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x6F, 0x3f, 0x73, 0x7b, 0x37,
+             - 0x00, 0x40, 0x39, 0x71};
+   7          uchar code SMGwei[] = {0xFE, 0xFD, 0xFB, 0xF7, 0xEF, 0xDF, 0xBF, 0x7F};
+   8          
+   9          
+  10          
+  11          /*三位数码管显示函数*/
+  12          void display(uchar a, uchar b, uchar c, uchar d, uchar e, uchar f, uchar g, uchar h)
+  13          {
+  14   1        static uchar wei; 
+  15   1        P0 = 0Xff;
+  16   1        WE = 1;
+  17   1        P0 = SMGwei[wei];
+  18   1        WE = 0;
+  19   1        switch(wei)
+  20   1        {
+  21   2          case 0: DU = 1; P0 = SMGduan[a]; DU = 0; break;
+  22   2          case 1: DU = 1; P0 = SMGduan[b]; DU = 0; break;    
+  23   2          case 2: DU = 1; P0 = SMGduan[c]; DU = 0; break; 
+  24   2          case 3: DU = 1; P0 = SMGduan[d]; DU = 0; break; 
+  25   2          case 4: DU = 1; P0 = SMGduan[e]; DU = 0; break; 
+  26   2          case 5: DU = 1; P0 = SMGduan[f]; DU = 0; break; 
+  27   2          case 6: DU = 1; P0 = SMGduan[g]; DU = 0; break; 
+  28   2          case 7: DU = 1; P0 = SMGduan[h]; DU = 0; break; //个位
+  29   2        }
+  30   1        wei++;
+  31   1        if(wei == 8) {
+  32   2            wei = 0;
+  33   2        }
+  34   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    115    ----
+   CONSTANT SIZE    =     26    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1       8
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

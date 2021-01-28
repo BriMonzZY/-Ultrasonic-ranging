@@ -1,0 +1,10 @@
+"..\output\main.obj",
+"..\output\hcsr04.obj",
+"..\output\led.obj",
+"..\output\iic.obj",
+"..\output\key.obj",
+"..\output\dac.obj",
+"..\output\smg.obj",
+"..\output\app.obj" 
+TO "..\output\³¬Éù²¨²â¾à" 
+PRINT(".\Listings\³¬Éù²¨²â¾à.m51") RAMSIZE(256) 

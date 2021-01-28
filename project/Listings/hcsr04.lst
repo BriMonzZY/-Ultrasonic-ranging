@@ -1,0 +1,139 @@
+C51 COMPILER V9.60.0.0   HCSR04                                                            01/28/2021 21:35:56 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE HCSR04
+OBJECT MODULE PLACED IN ..\output\hcsr04.obj
+COMPILER INVOKED BY: D:\app\keil\C51\BIN\C51.EXE ..\files\hcsr04.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\L
+                    -istings\hcsr04.lst) TABS(2) OBJECT(..\output\hcsr04.obj)
+
+line level    source
+
+   1          #include "config.h"
+   2          #include "main.h"
+   3          #include "iic.h"
+   4          
+   5          char buf[32];
+   6          float S;
+   7          
+   8          void Mydelay(uint i)//i*10us 延时
+   9          { 
+  10   1        uint z = 922;
+  11   1        i = z*i;
+  12   1        while(i != 0){i--;}
+  13   1      }
+  14          
+  15          void delay(uint z)//1ms 延时
+  16          { uint x,y;
+  17   1        for(x=z;x>0;x--)
+  18   1        for(y=110;y>0;y--);
+  19   1      }
+  20          
+  21          void senddelay(unsigned long time){
+  22   1        int i = 0;
+  23   1        int j = 0;
+  24   1        for(i = 0;i<100;i++){
+  25   2          for(j = 0;j<time;j++);
+  26   2        }
+  27   1      }
+  28          
+  29          
+  30          void init()//初始化函数
+  31          {
+  32   1        TMOD |= 0X01; //设 T0 为方式 1， GATE=1；
+  33   1        TH0=0;
+  34   1        TL0=0;  
+  35   1        EA=1; //开启总中断
+  36   1        ET0=1; //允许 T0 中断
+  37   1        TR0=0;
+  38   1        TRIG = 0;
+  39   1      }
+  40          
+  41          void StartModule() //启动模块
+  42           {
+  43   1        TRIG = 1;
+  44   1        Mydelay(2);//20us的延时保证高电平持续时间足够来启动模块
+  45   1        TRIG = 0;
+  46   1      }
+  47           
+  48          
+  49          void Conut(void) //计算距离
+  50          { 
+  51   1        uint time;
+  52   1        time=TH0*256+TL0;
+  53   1        TH0=0;
+  54   1        TL0=0;
+C51 COMPILER V9.60.0.0   HCSR04                                                            01/28/2021 21:35:56 PAGE 2   
+
+  55   1        S=(time*1.7)/100;
+  56   1      }
+  57          
+  58          void sendsingle(char single){     
+  59   1        SBUF = single;
+  60   1        while(TI != 1);
+  61   1        TI = 0;
+  62   1      }
+  63          
+  64          void sendMes(char *p)
+  65          {
+  66   1        while( *p != '\0'){
+  67   2        sendsingle(*p);
+  68   2        p++;
+  69   2        } 
+  70   1         senddelay(100);
+  71   1      }
+  72          
+  73          
+  74          
+  75          
+  76          void get_distance() {
+  77   1        uchar temp_dis; //存储上一次距离
+  78   1        StartModule();
+  79   1        while(!ECHO); //当 ECHO 为零时等待
+  80   1        TR0=1; //开启计数
+  81   1        while(ECHO); //当 ECHO为 1 计数并等待
+  82   1        TR0=0; //关闭计数
+  83   1        Conut(); //计算
+  84   1        TH0=0;   //计数器复位准备下一次计数
+  85   1        TL0=0; 
+  86   1        sprintf(buf,"S=%f\r\n",S);
+  87   1        sendMes(buf);
+  88   1        
+  89   1        //处理数据到数码管
+  90   1        dis = (int)S;
+  91   1        surface[2] = dis/100%10;
+  92   1        surface[3] = dis/10%10;
+  93   1        surface[4] = dis%10;
+  94   1        
+  95   1        if(addr == 110) {
+  96   2          temp_dis = read24c02(113);
+  97   2        }
+  98   1        if(addr == 113) {
+  99   2          temp_dis = read24c02(112);
+ 100   2        }
+ 101   1        if(addr == 111) {
+ 102   2          temp_dis = read24c02(110);
+ 103   2        }
+ 104   1        if(addr == 112) {
+ 105   2          temp_dis = read24c02(111);
+ 106   2        }
+ 107   1        
+ 108   1        surface[5] = temp_dis/100%10;
+ 109   1        surface[6] = temp_dis/10%10;
+ 110   1        surface[7] = temp_dis%10;
+ 111   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    434    ----
+   CONSTANT SIZE    =      7    ----
+C51 COMPILER V9.60.0.0   HCSR04                                                            01/28/2021 21:35:56 PAGE 3   
+
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     36       7
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
